@@ -1,0 +1,57 @@
+import { useState } from "react";
+
+type UserProfileProps = {
+  name: string;
+  note: string;
+  image: string;
+};
+
+export default function UserProfile({ name, note, image }: UserProfileProps) {
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [animating, setAnimating] = useState(false);
+
+  const handleToggle = () => {
+    setAnimating(true);
+
+    setTimeout(() => {
+      setIsFollowing((prev) => !prev);
+      setAnimating(false);
+    }, 150);
+  };
+
+  return (
+    <div className="w-full flex items-center justify-between gap-3">
+
+      {/* Writer Identity */}
+      <div className="flex items-center gap-3">
+        <img
+          src={image}
+          alt={name}
+          className="size-10 rounded-full object-cover"
+        />
+
+        <div>
+          <h2 className="text-sm font-semibold text-[#2A2622]">
+            {name}
+          </h2>
+
+          <p className="text-xs text-[#5C554D] italic leading-relaxed">
+            {note}
+          </p>
+        </div>
+      </div>
+
+      {/* Literary Action */}
+      <button
+        onClick={handleToggle}
+        className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-all duration-300 ease-out ${isFollowing
+            ? "bg-[#EFE7DA] text-[#5C554D] border-[#DDD2C3]"
+            : "bg-[#7A4E2D] text-[#F6F1E8] border-[#7A4E2D]"
+          } ${animating ? "scale-[0.97] opacity-80" : "scale-100"}`}
+      >
+        {isFollowing ? "Following" : "Follow"}
+      </button>
+
+    </div>
+  );
+}
