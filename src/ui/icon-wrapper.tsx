@@ -1,9 +1,41 @@
-import React from 'react'
+import React from "react";
 
-export default function IconWrapper({ children }: { children: React.ReactNode }) {
-    return (
-        <div className='size-12 bg-background rounded-full flex cursor-pointer items-center justify-center text-text'>
-            {children}
-        </div>
-    )
+type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  active?: boolean;
+  variant?: "icon" | "default";
+};
+
+export default function Button({
+  children,
+  active = false,
+  variant = "icon",
+  className = "",
+  ...props
+}: Props) {
+  return (
+    <button
+      {...props}
+      className={`
+        transition-all duration-300
+        focus:outline-none
+        active:scale-95
+        cursor-pointer
+        ${
+          variant === "icon"
+            ? "size-12 rounded-full flex items-center justify-center"
+            : "px-4 py-2 rounded-xl"
+        }
+
+        ${
+          active
+            ? "bg-surface text-text"
+            : "text-muted hover:text-text"
+        }
+
+        ${className}
+      `}
+    >
+      {children}
+    </button>
+  );
 }

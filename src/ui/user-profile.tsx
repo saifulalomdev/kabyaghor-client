@@ -8,16 +8,6 @@ type UserProfileProps = {
 
 export default function UserProfile({ name, note, image }: UserProfileProps) {
   const [isFollowing, setIsFollowing] = useState(false);
-  const [animating, setAnimating] = useState(false);
-
-  const handleToggle = () => {
-    setAnimating(true);
-
-    setTimeout(() => {
-      setIsFollowing((prev) => !prev);
-      setAnimating(false);
-    }, 150);
-  };
 
   return (
     <div className="w-full flex items-center justify-between gap-3">
@@ -43,11 +33,18 @@ export default function UserProfile({ name, note, image }: UserProfileProps) {
 
       {/* Literary Action */}
       <button
-        onClick={handleToggle}
-        className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-all duration-300 ease-out ${isFollowing
-            ? "bg-[#EFE7DA] text-[#5C554D] border-[#DDD2C3]"
-            : "bg-[#7A4E2D] text-[#F6F1E8] border-[#7A4E2D]"
-          } ${animating ? "scale-[0.97] opacity-80" : "scale-100"}`}
+        onClick={() => setIsFollowing(p => !p)}
+        className={`
+    px-4 py-1.5 rounded-full
+    text-sm font-medium
+    border border-border
+    transition-all duration-300 ease-out
+    bg-surface text-text
+    hover:bg-card
+    active:scale-[0.98]
+    cursor-pointer
+    ${isFollowing ? "scale-[0.97] opacity-80" : "scale-100"}
+  `}
       >
         {isFollowing ? "Following" : "Follow"}
       </button>

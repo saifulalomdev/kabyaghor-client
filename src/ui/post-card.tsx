@@ -5,7 +5,7 @@ import postImage from '../assets/images/post-image.jpg'
 
 export default function PostCard() {
     return (
-        <div className="w-full border-b p-4 space-y-4 border-[#DDD2C3]">
+        <div className="w-full border-b p-4 space-y-4 border-surface">
 
             <UserProfile
                 name="Saiful Alom"
@@ -13,7 +13,7 @@ export default function PostCard() {
                 image={profilePic}
             />
 
-            <div className="whitespace-pre-wrap">
+            <div className="whitespace-pre-wrap text-foreground/80">
                 {`The rain arrived before evening.
 
 A boy sat beside the old railway line,
