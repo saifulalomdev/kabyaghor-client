@@ -1,4 +1,3 @@
-import { useState } from "react";
 
 type Item = {
   id: string;
@@ -26,11 +25,6 @@ const items: Item[] = [
 ];
 
 export default function StorePage() {
-  const [query, setQuery] = useState("");
-
-  const filtered = items.filter((item) =>
-    item.title.toLowerCase().includes(query.toLowerCase())
-  );
 
   return (
     <div className="min-h-screen bg-background text-text">
@@ -44,26 +38,9 @@ export default function StorePage() {
           </p>
         </div>
 
-        {/* Search */}
-        {/* <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search books..."
-          className="
-            w-full
-            bg-surface
-            border border-border
-            rounded-xl
-            px-4 py-3
-            outline-none
-            text-sm
-            placeholder:text-muted
-          "
-        /> */}
-
         {/* Items */}
         <div className="grid grid-cols-2 gap-4">
-          {filtered.map((item) => (
+          {items.map((item) => (
             <div
               key={item.id}
               className="

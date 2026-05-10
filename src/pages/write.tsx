@@ -3,7 +3,6 @@ import { useRef, useState } from "react";
 
 export default function WritePage() {
     const [thumbnail, setThumbnail] = useState<string | null>(null);
-    const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
 
     const fileRef = useRef<HTMLInputElement>(null);
