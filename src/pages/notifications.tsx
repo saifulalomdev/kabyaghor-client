@@ -19,7 +19,7 @@ const notifications: Notification[] = [
 
 export default function NotificationsPage() {
   return (
-    <div className="min-h-screen bg-background text-text px-5 py-8">
+    <div className="bg-background text-text">
       <div className="max-w-2xl mx-auto flex flex-col gap-6">
 
         <h1 className="text-2xl font-semibold">Notifications</h1>

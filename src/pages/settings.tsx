@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Pencil } from "lucide-react";
-import profilePic from '../assets/images/porfile.jpg'
+import { Pencil, LogOut } from "lucide-react";
+import { useNavigate } from "react-router";
+import { toast } from "sonner";
+
+import profilePic from "../assets/images/porfile.jpg";
+import { authClient } from "../lib/auth-client";
 
 type User = {
     name: string;
@@ -9,23 +13,43 @@ type User = {
 };
 
 export default function SettingsPage() {
+    const navigate = useNavigate();
+
     const [user] = useState<User>({
         name: "Saiful Alom",
         image: profilePic,
         verified: true,
     });
 
+    const [loading, setLoading] = useState(false);
+
+    const handleLogout = async () => {
+        try {
+            setLoading(true);
+
+            await authClient.signOut();
+
+            toast.success("Signed out quietly");
+
+            navigate("/login");
+        } catch {
+            toast.error("Failed to sign out");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
-        <div className="bg-background text-text">
+        <div className="min-h-screen bg-background text-text px-5 py-6">
             <div className="max-w-2xl mx-auto flex flex-col gap-8">
 
-                {/* Profile Section */}
-                <div className="flex items-center justify-between p-4 rounded-2xl bg-surface border border-border">
+                {/* Profile */}
+                <div className="p-4 rounded-3xl bg-surface border border-border flex items-center justify-between gap-4">
 
-                    {/* Left: Avatar + Info */}
                     <div className="flex items-center gap-3">
                         <img
                             src={user.image}
+                            alt={user.name}
                             className="size-14 rounded-full object-cover"
                         />
 
@@ -35,11 +59,10 @@ export default function SettingsPage() {
                                     {user.name}
                                 </h2>
 
-                                {/* Blue Verification */}
                                 {user.verified && (
-                                    <span className="text-blue-500 text-xs font-bold">
+                                    <div className="size-5 rounded-full bg-primary flex items-center justify-center text-xs">
                                         ✔
-                                    </span>
+                                    </div>
                                 )}
                             </div>
 
@@ -49,38 +72,136 @@ export default function SettingsPage() {
                         </div>
                     </div>
 
-                    {/* Edit Button */}
-                    <button className="flex items-center gap-1 text-sm text-muted hover:text-text transition">
+                    {/* Edit */}
+                    <button
+                        className="
+              h-10 px-4
+              rounded-full
+              border border-border
+              bg-background
+              text-sm
+              flex items-center gap-2
+              text-muted
+              hover:text-text
+              transition-all
+            "
+                    >
                         <Pencil size={16} />
                         Edit
                     </button>
                 </div>
 
-                {/* Settings Sections */}
+                {/* Settings */}
                 <div className="flex flex-col gap-3">
 
-                    <div className="p-4 rounded-2xl bg-surface border border-border">
-                        <p className="text-sm font-medium">Appearance</p>
-                        <p className="text-xs text-muted mt-1">
-                            Theme, reading mode, typography
+                    <button
+                        className="
+              w-full
+              p-4
+              rounded-2xl
+              bg-surface
+              border border-border
+              text-left
+              transition-all
+              hover:bg-card
+            "
+                    >
+                        <p className="text-sm font-medium">
+                            Appearance
                         </p>
-                    </div>
 
-                    <div className="p-4 rounded-2xl bg-surface border border-border">
-                        <p className="text-sm font-medium">Privacy</p>
                         <p className="text-xs text-muted mt-1">
-                            Control your reading activity visibility
+                            Theme, typography, reading atmosphere
                         </p>
-                    </div>
+                    </button>
 
-                    <div className="p-4 rounded-2xl bg-surface border border-border">
-                        <p className="text-sm font-medium">Account</p>
-                        <p className="text-xs text-muted mt-1">
-                            Email, password, login sessions
+                    <button
+                        className="
+              w-full
+              p-4
+              rounded-2xl
+              bg-surface
+              border border-border
+              text-left
+              transition-all
+              hover:bg-card
+            "
+                    >
+                        <p className="text-sm font-medium">
+                            Notifications
                         </p>
-                    </div>
+
+                        <p className="text-xs text-muted mt-1">
+                            Reading updates, followers, recommendations
+                        </p>
+                    </button>
+
+                    <button
+                        className="
+              w-full
+              p-4
+              rounded-2xl
+              bg-surface
+              border border-border
+              text-left
+              transition-all
+              hover:bg-card
+            "
+                    >
+                        <p className="text-sm font-medium">
+                            Privacy
+                        </p>
+
+                        <p className="text-xs text-muted mt-1">
+                            Control visibility and reading activity
+                        </p>
+                    </button>
+
+                    <button
+                        className="
+              w-full
+              p-4
+              rounded-2xl
+              bg-surface
+              border border-border
+              text-left
+              transition-all
+              hover:bg-card
+            "
+                    >
+                        <p className="text-sm font-medium">
+                            Account
+                        </p>
+
+                        <p className="text-xs text-muted mt-1">
+                            Sessions, email address, connected devices
+                        </p>
+                    </button>
 
                 </div>
+
+                {/* Logout */}
+                <button
+                    onClick={handleLogout}
+                    disabled={loading}
+                    className="
+            w-full
+            p-4
+            rounded-2xl
+            border border-border
+            bg-surface
+            flex items-center justify-center gap-2
+            text-sm
+            text-muted
+            transition-all
+            hover:text-text
+            disabled:opacity-60
+          "
+                >
+                    <LogOut size={18} />
+
+                    {loading ? "Leaving..." : "Leave Kabyaghor"}
+                </button>
 
             </div>
         </div>

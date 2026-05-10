@@ -19,9 +19,12 @@ export default function Header() {
                         <Search />
                     </IconWrapper>
                 </Link>
-                <IconWrapper>
-                    <UserRound />
-                </IconWrapper>
+                <Link to="/settings">
+                    <IconWrapper>
+                        <UserRound />
+                    </IconWrapper>
+                </Link>
+
             </div>
         </header>
     )
