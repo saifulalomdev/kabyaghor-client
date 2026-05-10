@@ -1,30 +1,12 @@
-import { type InputHTMLAttributes } from "react";
+import { Search } from 'lucide-react'
+import type { InputHTMLAttributes } from 'react';
+type InputProps = InputHTMLAttributes<HTMLInputElement>;
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-    label: string;
-}
-
-export default function Input({ label, id, ...props }: InputProps) {
-
-    const inputId = id || label.toLowerCase().replace(/\s/g, "-");
-
+export default function Input({ type, ...props }: InputProps) {
     return (
-        <input
-            id={inputId}
-            {...props}
-            placeholder=" "
-            className="
-            peer
-            w-full h-12
-            px-4
-            rounded-2xl
-            border-2
-            bg-background
-            text-text
-            outline-none
-            transition-all
-            focus:border-secondary
-            "
-        />
-    );
+        <div className="flex flex-1 items-center gap-2 bg-surface border border-border rounded-full px-4 py-3">
+            {type === "search" && <Search size={18} className="text-muted" />}
+            <input {...props} className="w-full bg-transparent outline-none text-sm placeholder:text-muted" />
+        </div>
+    )
 }

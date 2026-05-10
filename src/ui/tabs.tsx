@@ -1,6 +1,6 @@
-import { Link, useLocation } from 'react-router'
-import { navItems } from '../constants/nav-items'
-import IconWrapper from './icon-wrapper'
+import { navItems } from '../constants/nav-items';
+import { Link, useLocation } from 'react-router';
+import Button from './button';
 
 export default function Tabs() {
   const location = useLocation()
@@ -12,9 +12,9 @@ export default function Tabs() {
 
         return (
           <Link to={path} key={i}>
-            <IconWrapper active={isActive}>
+            <Button active={isActive}>
               <Icon size={22} />
-            </IconWrapper>
+            </Button>
           </Link>
         )
       })}

@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { ChevronLeft, Search } from "lucide-react";
-import IconWrapper from "../ui/icon-wrapper";
+import { ChevronLeft } from "lucide-react";
+import Button from "../ui/button";
 import { useNavigate } from "react-router";
+import Input from "../ui/input";
 
 type Story = {
   id: string;
@@ -49,27 +50,19 @@ export default function SearchPage() {
       <div className="max-w-2xl mx-auto flex flex-col gap-6">
 
         <div className="flex gap-3">
-          <IconWrapper
+          <Button
             onClick={() => navigate(-1)}
             className="bg-surface"
           >
             <ChevronLeft />
-          </IconWrapper>
+          </Button>
           {/* Search */}
-          <div className="flex flex-1 items-center gap-2 bg-surface border border-border rounded-full px-4 py-3">
-            <Search size={18} className="text-muted" />
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search..."
-              className="w-full bg-transparent outline-none text-sm placeholder:text-muted"
-            />
-          </div>
+         <Input type="search" placeholder="Search..."/>
 
         </div>
         {/* Filters */}
         <div className="flex gap-2 text-xs">
-          {(["all", "popular", "latest", "Shop"] as Filter[]).map((item) => (
+          {(["all", "popular", "latest", "shop"] as Filter[]).map((item) => (
             <button
               key={item}
               onClick={() => setFilter(item)}

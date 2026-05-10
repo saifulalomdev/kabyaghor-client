@@ -23,7 +23,7 @@ export default function Button({
         ${
           variant === "icon"
             ? "size-12 rounded-full flex items-center justify-center"
-            : "px-4 py-2 rounded-xl"
+            : "px-4 py-2 rounded-xl w-full flex justify-center items-center gap-3 border"
         }
 
         ${

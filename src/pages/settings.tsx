@@ -5,6 +5,7 @@ import { toast } from "sonner";
 
 import profilePic from "../assets/images/porfile.jpg";
 import { authClient } from "../lib/auth-client";
+import Button from "../ui/button";
 
 type User = {
     name: string;
@@ -181,27 +182,16 @@ export default function SettingsPage() {
                 </div>
 
                 {/* Logout */}
-                <button
+                <Button
                     onClick={handleLogout}
                     disabled={loading}
-                    className="
-            w-full
-            p-4
-            rounded-2xl
-            border border-border
-            bg-surface
-            flex items-center justify-center gap-2
-            text-sm
-            text-muted
-            transition-all
-            hover:text-text
-            disabled:opacity-60
-          "
+                    variant="default"
                 >
+
                     <LogOut size={18} />
 
                     {loading ? "Leaving..." : "Leave Kabyaghor"}
-                </button>
+                </Button>
 
             </div>
         </div>

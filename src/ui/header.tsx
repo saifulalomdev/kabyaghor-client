@@ -1,5 +1,5 @@
 import { Bell, Search, UserRound } from 'lucide-react'
-import IconWrapper from './icon-wrapper'
+import Button from './button'
 import { Link } from 'react-router'
 
 export default function Header() {
@@ -8,21 +8,21 @@ export default function Header() {
         <header className='w-full h-16 flex p-4 justify-between items-center'>
 
             <Link to="/notifications">
-                <IconWrapper>
+                <Button>
                     <Bell />
-                </IconWrapper>
+                </Button>
             </Link>
             <div className='flex gap-4'>
 
                 <Link to="/search">
-                    <IconWrapper>
+                    <Button>
                         <Search />
-                    </IconWrapper>
+                    </Button>
                 </Link>
                 <Link to="/settings">
-                    <IconWrapper>
+                    <Button>
                         <UserRound />
-                    </IconWrapper>
+                    </Button>
                 </Link>
 
             </div>
