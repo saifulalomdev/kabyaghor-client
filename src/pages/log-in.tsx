@@ -117,7 +117,7 @@ export default function LogInPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 rounded-xl bg-surface border border-border text-sm font-medium mt-1"
+            className="w-full py-3 cursor-pointer rounded-xl bg-surface border border-border text-sm font-medium mt-1"
           >
             {loading ? "Sending..." : "Continue with Email"}
           </button>

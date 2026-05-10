@@ -57,7 +57,11 @@ export default function SearchPage() {
             <ChevronLeft />
           </Button>
           {/* Search */}
-         <Input type="search" placeholder="Search..."/>
+          <Input
+            type="search"
+            placeholder="Search..."
+            onChange={(e) => setQuery(e.target.value)}
+          />
 
         </div>
         {/* Filters */}
