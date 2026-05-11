@@ -15,7 +15,7 @@ import SettingsPage from "./pages/settings";
 import NotificationsPage from "./pages/notifications";
 import { Toaster } from "sonner";
 import LogInPage from "./pages/log-in";
-import { ProtectedRoute } from "./ui/protected-route";
+// import { ProtectedRoute } from "./ui/protected-route";
 
 export default function App() {
   const { updateStatusBar } = useStatusBar();
