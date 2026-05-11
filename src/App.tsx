@@ -5,8 +5,8 @@ import {
 } from "react-router";
 import MainLayout from "./layouts/main-layout";
 import HomePage from "./pages/home";
-import { useStatusBar } from "./hooks/use-status-bar";
-import { useEffect } from "react";
+// import { useStatusBar } from "./hooks/use-status-bar";
+// import { useEffect } from "react";
 import WritePage from "./pages/write";
 import StorePage from "./pages/store";
 import SavedPage from "./pages/saved";
