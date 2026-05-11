@@ -18,11 +18,11 @@ import LogInPage from "./pages/log-in";
 // import { ProtectedRoute } from "./ui/protected-route";
 
 export default function App() {
-  const { updateStatusBar } = useStatusBar();
+  // const { updateStatusBar } = useStatusBar();
 
-  useEffect(() => {
-    updateStatusBar({ color: '#1E3A8A', style: 'DARK' });
-  }, [updateStatusBar]);
+  // useEffect(() => {
+  //   updateStatusBar({ color: '#1E3A8A', style: 'DARK' });
+  // }, [updateStatusBar]);
 
   return (
     <BrowserRouter>
