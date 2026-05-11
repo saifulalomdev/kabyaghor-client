@@ -41,7 +41,7 @@ export default function SettingsPage() {
     };
 
     return (
-        <div className="min-h-screen bg-background text-text px-5 py-6">
+        <div className="min-h-screen bg-background text-text">
             <div className="max-w-2xl mx-auto flex flex-col gap-8">
 
                 {/* Profile */}

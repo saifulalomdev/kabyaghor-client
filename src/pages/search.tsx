@@ -51,6 +51,7 @@ export default function SearchPage() {
 
         <div className="flex gap-3">
           <Button
+            variant="icon"
             onClick={() => navigate(-1)}
             className="bg-surface"
           >
