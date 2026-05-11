@@ -8,19 +8,19 @@ export default function Header() {
         <header className='w-full h-16 flex p-4 justify-between items-center'>
 
             <Link to="/notifications">
-                <Button>
+                <Button variant='icon'>
                     <Bell />
                 </Button>
             </Link>
             <div className='flex gap-4'>
 
                 <Link to="/search">
-                    <Button>
+                    <Button variant='icon'>
                         <Search />
                     </Button>
                 </Link>
                 <Link to="/settings">
-                    <Button>
+                    <Button variant='icon'>
                         <UserRound />
                     </Button>
                 </Link>

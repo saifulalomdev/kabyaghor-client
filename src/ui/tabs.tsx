@@ -12,7 +12,7 @@ export default function Tabs() {
 
         return (
           <Link to={path} key={i}>
-            <Button active={isActive}>
+            <Button variant='icon' active={isActive}>
               <Icon size={22} />
             </Button>
           </Link>

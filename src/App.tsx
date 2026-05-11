@@ -34,12 +34,12 @@ export default function App() {
           <Route path="/store" element={<StorePage />} />
 
           {/* Protected routes */}
-          <Route element={<ProtectedRoute />}>
-            <Route path="/write" element={<WritePage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/saved" element={<SavedPage />} />
-            <Route path="/notifications" element={<NotificationsPage />} />
-          </Route>
+          {/* <Route element={<ProtectedRoute />}> */}
+          <Route path="/write" element={<WritePage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/saved" element={<SavedPage />} />
+          <Route path="/notifications" element={<NotificationsPage />} />
+          {/* </Route> */}
         </Route>
         {/* Protected Feature Blocks */}
 

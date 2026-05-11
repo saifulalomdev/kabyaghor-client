@@ -2,30 +2,30 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Navigate } from "react-router";
-import { authClient, getAuthCallbackURL } from "../lib/auth-client";
+import { authClient } from "../lib/auth-client";
 import { toast } from "sonner";
 import { signInSchema } from "../schema/sign-in-schema";
+import Input from "../ui/input";
+import Button from "../ui/button";
 
 type FormData = {
   email: string;
+  otp?: string; // Appended for validation step
 };
 
 export default function LogInPage() {
   const [loading, setLoading] = useState(false);
-  const fromPath = ((location as any).state as { from?: { pathname: string } })?.from?.pathname || "/";
-  // 1. Monitor live session state to intercept logged-in users
+  const [step, setStep] = useState<"request" | "verify">("request");
   const { data: session, isPending } = authClient.useSession();
 
-  // 2. React Hook Form instantiation with Zod schema verification
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>({
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(signInSchema),
+    defaultValues: { email: "", otp: "" }
   });
 
-  // 3. Fallback loader to prevent UI flashing during network validation
+  // Watch the current email address to persist UI indicators
+  const watchedEmail = watch("email");
+
   if (isPending) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background text-text">
@@ -34,29 +34,43 @@ export default function LogInPage() {
     );
   }
 
-  // 4. Force immediate escape redirection out of login if token is active
   if (session) {
     return <Navigate to="/" replace />;
   }
 
-  const onSubmit = async (data: any) => {
-    try {
-      await authClient.signIn.magicLink({
-        email: data.email,
-        callbackURL: getAuthCallbackURL(fromPath), // 👈 Dynamic destination injection
-      });
-      toast.success("Check your email for the login link");
-    } catch (err: any) {
-      toast.error(err.message || "Something went wrong");
-    }
-  };
-
-  const handleGoogle = async () => {
+  // Unified onSubmit interceptor split by active phase state
+  const onSubmit = async (data: FormData) => {
     setLoading(true);
     try {
-      toast.success("Redirecting to Google...");
-    } catch {
-      toast.error("Google sign-in failed");
+      if (step === "request") {
+        // Phase 1: Request code generation via plugin actions
+        const res = await authClient.emailOtp.sendVerificationOtp({
+          email: data.email,
+          type: "sign-in",
+        });
+
+        if (res.error) throw new Error(res.error.message);
+
+        toast.success("Verification code dispatched to your inbox");
+        setStep("verify");
+      } else {
+        // Phase 2: Validate code input to generate secure session cookies
+        if (!data.otp) {
+          toast.error("Please provide the 6-digit authentication code");
+          return;
+        }
+
+        const res = await authClient.signIn.emailOtp({
+          email: data.email,
+          otp: data.otp,
+        });
+
+        if (res.error) throw new Error(res.error.message);
+
+        toast.success("Access granted! Authenticating session...");
+      }
+    } catch (err: any) {
+      toast.error(err.message || "An expected authentication failure occurred.");
     } finally {
       setLoading(false);
     }
@@ -65,64 +79,69 @@ export default function LogInPage() {
   return (
     <div className="min-h-screen bg-background text-text flex items-center justify-center px-5">
       <div className="w-full max-w-sm flex flex-col gap-6 text-center">
-
-        {/* Title */}
         <div>
-          <h1 className="text-2xl font-semibold">Welcome back</h1>
+          <h1 className="text-2xl font-semibold">
+            {step === "request" ? "Welcome back" : "Confirm identity"}
+          </h1>
           <p className="text-sm text-muted mt-2">
-            Continue your reading journey
+            {step === "request" 
+              ? "Continue your reading journey" 
+              : `Code sent to ${watchedEmail}`}
           </p>
         </div>
 
-        {/* Google */}
-        <button
-          onClick={handleGoogle}
-          disabled={loading}
-          className="w-full py-3 rounded-xl bg-primary text-black font-medium"
-        >
-          Continue with Google
-        </button>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
+          {step === "request" ? (
+            /* PHASE 1 UI: EMAIL SUBMISSION */
+            <div>
+              <Input 
+                type="email" 
+                placeholder="Email address" 
+                {...register("email")} 
+              />
+              {errors.email && (
+                <p className="text-sm text-red-500 px-2 text-left mt-1">
+                  {errors.email.message}
+                </p>
+              )}
+            </div>
+          ) : (
+            /* PHASE 2 UI: OTP CODE CORRELATION */
+            <div>
+              <Input 
+                type="text" 
+                placeholder="6-Digit OTP Code" 
+                maxLength={6}
+                autoFocus
 
-        {/* Divider */}
-        <div className="flex items-center gap-3 text-muted text-xs">
-          <div className="flex-1 h-px bg-border" />
-          or
-          <div className="flex-1 h-px bg-border" />
-        </div>
-
-        {/* Email Form */}
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
-          <input
-            type="email"
-            placeholder="Email address"
-            {...register("email")}
-            className="
-              w-full
-              px-4 py-3
-              rounded-xl
-              bg-surface
-              border border-border
-              outline-none
-              text-sm
-            "
-          />
-
-          {/* INLINE ERROR */}
-          {errors.email && (
-            <p className="text-xs text-red-500 text-left px-1">
-              {errors.email.message}
-            </p>
+                className="text-center font-mono tracking-widest text-lg"
+                {...register("otp")} 
+              />
+              {errors.otp && (
+                <p className="text-sm text-red-500 px-2 text-left mt-1">
+                  {errors.otp.message}
+                </p>
+              )}
+            </div>
           )}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 cursor-pointer rounded-xl bg-surface border border-border text-sm font-medium mt-1"
-          >
-            {loading ? "Sending..." : "Continue with Email"}
-          </button>
-        </form>
+          <Button type="submit" disabled={loading}>
+            {loading 
+              ? "Processing..." 
+              : step === "request" ? "Continue with Email" : "Verify & Sign In"}
+          </Button>
 
+          {step === "verify" && (
+            <button
+              type="button"
+              className="text-xs text-muted hover:underline mt-1"
+              onClick={() => setStep("request")}
+              disabled={loading}
+            >
+              Change email address
+            </button>
+          )}
+        </form>
       </div>
     </div>
   );
